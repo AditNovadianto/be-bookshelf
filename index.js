@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { db } from "./config/db.js";
+import bookRoute from "./routes/bookRoute.js";
 
 dotenv.config();
 
@@ -30,20 +31,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the bookshelf API");
 });
 
-// app.use(authRoute);
-// app.use(sectionRoute);
-// app.use(berandaRoute);
-// app.use(demografiRoute);
-// app.use(petaWilayahRoute);
-// app.use(visiMisiRoute);
-// app.use(batasWilayahRoute);
-// app.use(pemerintahanRoute);
-// app.use(potensiRoute);
-// app.use(sejarahRoute);
-// app.use(wisataRoute);
-// app.use(saranaPrasaranaRoute);
-// app.use(galeriRoute);
-// app.use(roleRoute);
+app.use(bookRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
