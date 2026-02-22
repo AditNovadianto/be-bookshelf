@@ -53,7 +53,13 @@ export const insertBook = async (req, res) => {
 // Read
 export const getBooks = async (req, res) => {
   try {
-    const books = await bookModel.getBooks();
+    const { name, reading, finished } = req.query;
+
+    const books = await bookModel.getBooks({
+      name,
+      reading,
+      finished,
+    });
 
     const filteredBooks = books.map(({ id, name, publisher }) => ({
       id,

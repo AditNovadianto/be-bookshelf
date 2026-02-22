@@ -42,9 +42,45 @@ export async function insertBook(
 }
 
 // Read
-export async function getBooks() {
+export async function getBooks(filters) {
   try {
-    const [rows] = await db.query("SELECT * FROM book");
+    let query = "SELECT * FROM book WHERE 1=1";
+    const values = [];
+
+    // Filter name (non-case sensitive)
+    if (filters.name) {
+      query += " AND LOWER(name) LIKE ?";
+
+      values.push(`%${filters.name.toLowerCase()}%`);
+    }
+
+    // Filter reading
+    if (filters.reading !== undefined) {
+      if (filters.reading === "1") {
+        query += " AND reading = ?";
+
+        values.push(true);
+      } else if (filters.reading === "0") {
+        query += " AND reading = ?";
+
+        values.push(false);
+      }
+    }
+
+    // Filter finished
+    if (filters.finished !== undefined) {
+      if (filters.finished === "1") {
+        query += " AND finished = ?";
+
+        values.push(true);
+      } else if (filters.finished === "0") {
+        query += " AND finished = ?";
+
+        values.push(false);
+      }
+    }
+
+    const [rows] = await db.query(query, values);
 
     return rows;
   } catch (error) {
